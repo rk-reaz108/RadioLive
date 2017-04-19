@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button buttonPlay, btnStart, btnStop;
     private Button buttonStopPlay;
     private MediaPlayer player;
-
+    Recorder recorderNew;
     /**
      * Called when the activity is first created.
      */
@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        recorderNew=new Recorder("dsf");
         initializeUIElements();
         initializeMediaPlayer();
 
@@ -279,12 +279,32 @@ public class MainActivity extends Activity implements OnClickListener {
             stopPlaying();
         } else if (v == btnStart) {
             //enableButtons(true);
-            startRecording();
+//            startRecording();
+            try {
+                recorderNew.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (v == btnStop) {
             //enableButtons(false);
-            stopRecording();
+//            stopRecording();
+            if(recorderNew.isRecording()){
+                recorderNew.stop();
+            }
         }
 
     }
 
+/* else if (v == btnStart) {
+        //enableButtons(true);
+        try {
+            recorderNew.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } else if (v == btnStop) {
+        if(recorderNew.isRecording()){
+            recorderNew.stop();
+        }
+    }*/
 }
