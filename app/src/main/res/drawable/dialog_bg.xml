@@ -1,0 +1,19 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/iPhone_transpar" />
+
+    <corners
+        android:bottomLeftRadius="15dip"
+        android:bottomRightRadius="15dip"
+        android:topLeftRadius="15dip"
+        android:topRightRadius="15dip" />
+
+</shape>
+
+
+
+
+
+
+
+

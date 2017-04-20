@@ -1,9 +1,14 @@
 package com.educare.radio;
 
+import android.app.Dialog;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +30,8 @@ public class Recorder {
 
     private static final int RECORDER_BPP = 16;
     private static final String AUDIO_RECORDER_FILE_EXT_WAV = "AudioRecorder.wav";
-    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    String fileName;
+    private static final String AUDIO_RECORDER_FOLDER = "RadioAR";
     private static final String AUDIO_RECORDER_TEMP_FILE = "record_temp.raw";
     private static final int RECORDER_SAMPLERATE = 8000;
     private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
@@ -73,9 +79,9 @@ public class Recorder {
 
     }
 
-    public void start() throws IllegalStateException, IOException
+    public void start(String fileName) throws IllegalStateException, IOException
     {
-
+     this.fileName=fileName;
         buffer = new short[4088];
 
         recorder.startRecording();
@@ -135,7 +141,7 @@ public class Recorder {
             file.mkdirs();
         }
 
-        return (file.getAbsolutePath() + "/" + AUDIO_RECORDER_FILE_EXT_WAV);
+        return (file.getAbsolutePath() + "/" + fileName+".wav");
     }
 
 
@@ -314,4 +320,5 @@ public class Recorder {
 
         out.write(header, 0, 4088);
     }
+
 }

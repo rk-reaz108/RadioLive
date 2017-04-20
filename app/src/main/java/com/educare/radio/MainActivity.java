@@ -3,6 +3,7 @@
 package com.educare.radio;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
@@ -16,7 +17,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,6 +40,9 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button buttonStopPlay;
     private MediaPlayer player;
     Recorder recorderNew;
+    String fileName;
+    boolean isPlaying=false;
+    MainActivity activity;
     /**
      * Called when the activity is first created.
      */
@@ -43,6 +50,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity=this;
         recorderNew=new Recorder("dsf");
         initializeUIElements();
         initializeMediaPlayer();
@@ -274,17 +282,19 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void onClick(View v) {
         if (v == buttonPlay) {
+            isPlaying=true;
             startPlaying();
         } else if (v == buttonStopPlay) {
+            isPlaying=false;
             stopPlaying();
         } else if (v == btnStart) {
             //enableButtons(true);
 //            startRecording();
-            try {
-                recorderNew.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if(isPlaying){
+                dialogFileName();
+            }else
+                Toast.makeText(activity,"please Play Radio first.",Toast.LENGTH_LONG).show();
+
         } else if (v == btnStop) {
             //enableButtons(false);
 //            stopRecording();
@@ -307,4 +317,40 @@ public class MainActivity extends Activity implements OnClickListener {
             recorderNew.stop();
         }
     }*/
+public void dialogFileName() {
+    final Dialog dialog = new Dialog(this, R.style.CustomAlertDialog);
+    dialog.setContentView(R.layout.dialog_share_file_name);
+    dialog.setCancelable(false);
+
+    final TextView etFileName = (EditText) dialog.findViewById(R.id.etFileName);
+//        etFileName.setText(getResources().getText(R.string.BackPermission));
+
+    Button btNo = (Button) dialog.findViewById(R.id.btNo);
+    Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+
+    btNo.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            dialog.dismiss();
+        }
+    });
+    btnOk.setOnClickListener(new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            fileName = etFileName.getText().toString();
+            try {
+                recorderNew.start(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            dialog.dismiss();
+        }
+
+    });
+    DialogNavBarHide.navBarHide(this, dialog);
+
+
+}
 }
