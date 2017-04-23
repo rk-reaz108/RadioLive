@@ -2,7 +2,6 @@
 
 package com.educare.radio;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -22,11 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rokan.mylibrary.Animanation;
+import com.rokan.mylibrary.BaseActivity;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends BaseActivity implements OnClickListener {
 
     private static final int RECORDER_SAMPLERATE = 8000;
     private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
@@ -54,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener {
         recorderNew=new Recorder("dsf");
         initializeUIElements();
         initializeMediaPlayer();
+
 
 
         //setButtonHandlers();
@@ -281,6 +284,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
     public void onClick(View v) {
+        Animanation.blink(v);
         if (v == buttonPlay) {
             isPlaying=true;
             startPlaying();
@@ -350,6 +354,7 @@ public void dialogFileName() {
 
     });
     DialogNavBarHide.navBarHide(this, dialog);
+
 
 
 }
